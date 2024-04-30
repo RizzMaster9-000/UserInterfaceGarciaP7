@@ -6,16 +6,20 @@ using UnityEngine.UIElements;
 public class Target : MonoBehaviour
 {
     private Rigidbody targetRb;
+    private GameManager gameManager;
     private float minSpeed = 14;
     private float maxSpeed = 18;
     private float maxTorque = 10;
     private float xRange = 4;
     private float ySpawnPos = -6;
     
+    
     // Start is called before the first frame update
     void Start()
     {
        targetRb = GetComponent<Rigidbody>();
+       
+       gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
        targetRb.AddForce(RandomForce(), ForceMode.Impulse);
        targetRb.AddTorque(RandomTorque(), RandomTorque(), RandomTorque(), ForceMode.Impulse);
@@ -26,6 +30,7 @@ public class Target : MonoBehaviour
     private void OnMouseDown()
     {
         Destroy(gameObject);
+        gameManager.UpdateScore(5);
     }
 
     private void OnTriggerEnter(Collider other)
