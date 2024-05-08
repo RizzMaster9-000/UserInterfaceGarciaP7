@@ -12,6 +12,8 @@ public class Target : MonoBehaviour
     private float maxTorque = 10;
     private float xRange = 4;
     private float ySpawnPos = -6;
+    public int pointValue;
+    public ParticleSystem explosionParticle;
     
     
     // Start is called before the first frame update
@@ -29,13 +31,27 @@ public class Target : MonoBehaviour
 
     private void OnMouseDown()
     {
-        Destroy(gameObject);
-        gameManager.UpdateScore(5);
+        if(gameManager.isGameActive)
+        {
+            Destroy(gameObject);
+            if (gameObject.CompareTag("Nuke"))
+            {
+                gameManager.GameOver();
+            }
+            gameManager.UpdateScore(pointValue);
+            Instantiate(explosionParticle, transform.position, explosionParticle.transform.rotation);
+
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
         Destroy(gameObject);
+        if (gameObject.CompareTag("Good"))
+        {
+            gameManager.GameOver();
+        }
+        
     }
 
 
