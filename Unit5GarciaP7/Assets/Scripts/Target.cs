@@ -14,8 +14,10 @@ public class Target : MonoBehaviour
     private float ySpawnPos = -6;
     public int pointValue;
     public ParticleSystem explosionParticle;
-    
-    
+    public AudioClip clickSound;
+    private AudioSource clickAudio;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,12 +29,14 @@ public class Target : MonoBehaviour
        targetRb.AddTorque(RandomTorque(), RandomTorque(), RandomTorque(), ForceMode.Impulse);
 
        transform.position = RandomSpawnPos();
+       clickAudio = GetComponent<AudioSource>();
     }
 
     private void OnMouseDown()
     {
         if(gameManager.isGameActive)
         {
+            clickAudio.PlayOneShot(clickSound, 1.0f);
             Destroy(gameObject);
             if (gameObject.CompareTag("Nuke"))
             {
@@ -40,6 +44,7 @@ public class Target : MonoBehaviour
             }
             gameManager.UpdateScore(pointValue);
             Instantiate(explosionParticle, transform.position, explosionParticle.transform.rotation);
+            
 
         }
     }
